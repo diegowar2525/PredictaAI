@@ -8,7 +8,7 @@ from .forms.signup import SignUpForm
 
 def login_view(request): 
     if request.user.is_authenticated:
-        return redirect("blog:post_list")
+        return redirect("gameplay:start-game")
     
     if request.method == "POST": 
         form = LoginForm(request.POST) 
