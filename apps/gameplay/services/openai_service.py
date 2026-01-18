@@ -17,12 +17,13 @@ NO markdown.
 
 Formato exacto:
 {{
-  "accion": "registrar_venta | consultar_stock | productos_mas_vendidos | pedir_aclaracion",
-  "producto": "string",
-  "cantidad": number
+  "accion": "registrar_venta | consultar_stock | productos_mas_vendidos | listar_productos | pedir_aclaracion",
+  "producto": null,
+  "cantidad": null
 }}
 
 Reglas:
+- Si el mensaje pregunta por TODOS los productos, inventario o lista → listar_productos
 - Si el mensaje pregunta por productos más vendidos → productos_mas_vendidos
 - Si falta información → pedir_aclaracion
 - Si no se menciona cantidad → usar 1
@@ -45,3 +46,4 @@ Mensaje: "{mensaje}"
         return json.loads(match.group())
     except json.JSONDecodeError:
         return {"accion": "pedir_aclaracion"}
+

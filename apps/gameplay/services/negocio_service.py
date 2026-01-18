@@ -57,6 +57,42 @@ def ejecutar_accion(data):
             respuesta += f"- {p.nombre}: {p.total_vendido} unidades\n"
 
         return respuesta
+    
+    if accion == "listar_productos":
+        productos = Producto.objects.filter(activo=True)
+
+        if not productos.exists():
+            return "📦 No tienes productos registrados"
+
+        respuesta = """
+        <strong>📦 Productos registrados</strong>
+        <table style="width:100%; border-collapse: collapse; margin-top:8px;">
+            <thead>
+                <tr style="background:#4f46e5; color:white;">
+                    <th style="padding:6px; border:1px solid #ddd;">Producto</th>
+                    <th style="padding:6px; border:1px solid #ddd;">Stock</th>
+                    <th style="padding:6px; border:1px solid #ddd;">Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+        """
+
+        for p in productos:
+            respuesta += f"""
+            <tr>
+                <td style="padding:6px; border:1px solid #ddd;">{p.nombre}</td>
+                <td style="padding:6px; border:1px solid #ddd; text-align:center;">
+                    {p.stock_actual}
+                </td>
+                <td style="padding:6px; border:1px solid #ddd;">
+                    ${p.precio_venta}
+                </td>
+            </tr>
+            """
+
+        respuesta += "</tbody></table>"
+        return respuesta
+
 
     # 🤔 ACLARACIÓN
     if accion == "pedir_aclaracion":

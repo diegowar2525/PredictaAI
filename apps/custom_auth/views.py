@@ -8,7 +8,7 @@ from .forms.signup import SignUpForm
 
 def login_view(request): 
     if request.user.is_authenticated:
-        return redirect("gameplay:start-game")
+        return redirect("companies:dashboard")
     
     if request.method == "POST": 
         form = LoginForm(request.POST) 
@@ -30,13 +30,13 @@ def login_view(request):
 
 def signup_done_view(request):
     if request.user.is_authenticated: 
-        return redirect("gameplay:start-game")
+        return redirect("companies:dashboard")
     
     return render(request, "custom_auth/signup_done.html")
 
 def signup_view(request): 
     if request.user.is_authenticated: 
-        return redirect("gameplay:start-game")
+        return redirect("companies:dashboard")
     
     if request.method == "POST":
         form = SignUpForm(request.POST)

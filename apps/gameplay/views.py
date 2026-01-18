@@ -12,7 +12,6 @@ def chatbot(request):
     return render(request, 'chatbot.html')
 
 
-@login_required
 @require_POST
 def chatbot_api(request):
     try:
