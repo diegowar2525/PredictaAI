@@ -9,55 +9,95 @@
     <link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
 </head>
 <body>
-    <div class="chat-fullscreen">
-        <div class="chatbot-header">
-            <div class="chatbot-header-info">
-                <div class="chatbot-avatar">AI</div>
-                <div>
-                    <h3 class="chatbot-title">Asistente Virtual</h3>
-                    <div class="chatbot-status">
-                        <span class="status-dot"></span>
-                        <span>En línea</span>
-                    </div>
-                </div>
+    <div class="chat-container">
+        <!-- 📜 SIDEBAR CON HISTORIAL -->
+        <div class="chat-sidebar">
+            <div class="sidebar-header">
+                <h4>💬 Conversaciones</h4>
+                <button class="btn btn-primary btn-sm" onclick="nuevaConversacion()">
+                    ➕ Nuevo Chat
+                </button>
             </div>
-            <a href="{% url 'companies:dashboard' %}" class="chatbot-close" title="Volver al dashboard">←</a>
-        </div>
-
-        <div class="chatbot-messages" id="chatbotMessages">
-            <div class="welcome-message">
-                <h3>¡Hola! Soy tu asistente</h3>
-                <p>¿En qué puedo ayudarte hoy?</p>
-                <div class="welcome-suggestions">
-                    <div class="suggestion-chip" data-message="¿Cuáles son los productos más vendidos?">
-                        ¿Cuáles son los productos más vendidos?
-                    </div>
-                    <div class="suggestion-chip" data-message="Registrar venta: vendí 3 cuadernos a $2.50">
-                        Registrar una venta
-                    </div>
-                    <div class="suggestion-chip" data-message="¿Qué productos necesito reponer?">
-                        ¿Qué productos necesito reponer?
-                    </div>
-                </div>
+            
+            <div class="conversaciones-list">
+                {% for conv in conversaciones %}
+                <a href="{% url 'gameplay:chatbot_conversacion' conv.id %}" 
+                   class="conversacion-item {% if conv.id == conversacion_actual.id %}active{% endif %}">
+                    <div class="conv-titulo">{{ conv.titulo }}</div>
+                    <div class="conv-fecha">{{ conv.fecha_actualizacion|date:"d/m/Y H:i" }}</div>
+                    <button class="btn-delete" onclick="eliminarConversacion(event, {{ conv.id }})">🗑️</button>
+                </a>
+                {% empty %}
+                <p class="text-muted text-center mt-3">No hay conversaciones</p>
+                {% endfor %}
             </div>
         </div>
 
-        <div class="chatbot-input-area">
-            <input 
-                type="text" 
-                class="chatbot-input" 
-                id="chatbotInput" 
-                placeholder="Escribe tu mensaje..."
-                autocomplete="off"
-            >
-            <button class="chatbot-send-btn" id="chatbotSend">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                </svg>
-            </button>
+        <!-- 💬 CHAT PRINCIPAL -->
+        <div class="chat-fullscreen">
+            <div class="chatbot-header">
+                <div class="chatbot-header-info">
+                    <div class="chatbot-avatar">AI</div>
+                    <div>
+                        <h3 class="chatbot-title">{{ conversacion_actual.titulo }}</h3>
+                        <div class="chatbot-status">
+                            <span class="status-dot"></span>
+                            <span>En línea</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'companies:dashboard' %}" class="chatbot-close" title="Volver al dashboard">←</a>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages">
+                {% if mensajes %}
+                    {% for msg in mensajes %}
+                        <div class="message {{ msg.tipo }}">
+                            <div class="message-content">
+                                {{ msg.mensaje|safe }}
+                                <div class="message-time">{{ msg.fecha|date:"H:i" }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="welcome-message">
+                        <h3>¡Hola! Soy tu asistente</h3>
+                        <p>¿En qué puedo ayudarte hoy?</p>
+                        <div class="welcome-suggestions">
+                            <div class="suggestion-chip" data-message="¿Cuáles son los productos más vendidos?">
+                                ¿Cuáles son los productos más vendidos?
+                            </div>
+                            <div class="suggestion-chip" data-message="Registrar venta">
+                                Registrar una venta
+                            </div>
+                            <div class="suggestion-chip" data-message="¿Qué productos necesito reponer?">
+                                ¿Qué productos necesito reponer?
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="chatbot-input-area">
+                <input 
+                    type="text" 
+                    class="chatbot-input" 
+                    id="chatbotInput" 
+                    placeholder="Escribe tu mensaje..."
+                    autocomplete="off"
+                >
+                <button class="chatbot-send-btn" id="chatbotSend">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 
+    <script>
+        const CONVERSACION_ID = {{ conversacion_actual.id }};
+    </script>
     <script src="{% static 'js/chatbot.js' %}"></script>
 </body>
 </html>
