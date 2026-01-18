@@ -113,3 +113,64 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+// ==========================================
+// VOICE RECOGNITION IMPLEMENTATION
+// ==========================================
+
+const micBtn = document.getElementById('chatbotMic');
+
+// Verificar soporte del navegador
+if ('webkitSpeechRecognition' in window) {
+    const recognition = new webkitSpeechRecognition();
+    
+    recognition.continuous = false; // Se detiene al dejar de hablar
+    recognition.lang = 'es-ES';     // Idioma Español
+    recognition.interimResults = false;
+
+    // Click en el micrófono
+    micBtn.addEventListener('click', function() {
+        if (micBtn.classList.contains('listening')) {
+            recognition.stop();
+        } else {
+            recognition.start();
+        }
+    });
+
+    // Inicio de la escucha
+    recognition.onstart = function() {
+        micBtn.classList.add('listening');
+        chatbotInput.placeholder = "Escuchando...";
+        micBtn.title = "Escuchando... clic para detener";
+    };
+
+    // Fin de la escucha (por silencio o manual)
+    recognition.onend = function() {
+        micBtn.classList.remove('listening');
+        chatbotInput.placeholder = "Escribe tu mensaje...";
+        micBtn.title = "Hablar";
+        chatbotInput.focus();
+    };
+
+    // Resultado obtenido
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        
+        // 1. Insertamos el texto en el input
+        chatbotInput.value = transcript;
+        
+        // 2. Opcional: Auto-envío (actualmente desactivado para que el usuario verifique)
+        // sendMessage(); 
+    };
+
+    recognition.onerror = function(event) {
+        console.error("Error de reconocimiento de voz:", event.error);
+        micBtn.classList.remove('listening');
+        chatbotInput.placeholder = "Error al escuchar. Intenta escribir.";
+    };
+
+} else {
+    // Si el navegador no soporta la API (ej. Firefox desktop sin flags), ocultamos el botón
+    console.warn("Web Speech API no soportada en este navegador.");
+    micBtn.style.display = 'none';
+}

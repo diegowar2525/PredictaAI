@@ -6,8 +6,9 @@ import json
 
 from .services.openai_service import interpretar_mensaje
 from .services.negocio_service import ejecutar_accion
+from django.views.decorators.csrf import ensure_csrf_cookie
 
-
+@ensure_csrf_cookie
 def chatbot(request):
     return render(request, 'chatbot.html')
 
