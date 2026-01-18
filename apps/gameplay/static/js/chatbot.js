@@ -4,33 +4,38 @@ const chatbotSend = document.getElementById('chatbotSend');
 const chatbotMessages = document.getElementById('chatbotMessages');
 
 // Send message
+// Send message
 function sendMessage() {
     const message = chatbotInput.value.trim();
     if (!message) return;
 
-    // Mostrar mensaje del usuario
     addMessage(message, 'user');
     chatbotInput.value = '';
 
-    // Mostrar "escribiendo..."
     showTypingIndicator();
 
-    fetch('/gameplay/chatbot/api/', {
+    fetch('/gameplay/chat/api/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
         },
-        credentials: 'same-origin',  // 🔥 ESTO ES LO IMPORTANTE
+        credentials: 'same-origin',
         body: JSON.stringify({
-            mensaje: message
+            mensaje: message,
+            conversacion_id: CONVERSACION_ID
         })
     })
-
     .then(response => response.json())
     .then(data => {
-    hideTypingIndicator();
-    addMessage(data.respuesta || data.error || '⚠️ Respuesta inválida', 'bot');
+        hideTypingIndicator();
+        addMessage(data.respuesta || data.error || '⚠️ Respuesta inválida', 'bot');
+        
+        // ✅ ACTUALIZAR TÍTULO SI ES EL PRIMER MENSAJE
+        if (data.es_primer_mensaje && data.nuevo_titulo) {
+            actualizarTitulo(data.nuevo_titulo);
+            actualizarTituloSidebar(CONVERSACION_ID, data.nuevo_titulo);
+        }
     })
     .catch(error => {
         hideTypingIndicator();
@@ -39,6 +44,84 @@ function sendMessage() {
     });
 }
 
+// ✅ TOGGLE SIDEBAR
+function toggleSidebar() {
+    const sidebar = document.getElementById('chatSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    sidebar.classList.toggle('hidden');
+    overlay.classList.toggle('active');
+    
+    // Cambiar ícono
+    if (sidebar.classList.contains('hidden')) {
+        // Ícono de menú hamburguesa (mostrar sidebar)
+        toggleIcon.innerHTML = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>';
+    } else {
+        // Ícono de X (cerrar sidebar)
+        toggleIcon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>';
+    }
+    
+    // Guardar estado en localStorage
+    localStorage.setItem('sidebarHidden', sidebar.classList.contains('hidden'));
+}
+
+// ✅ RESTAURAR ESTADO DEL SIDEBAR AL CARGAR
+document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chatbotMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Restaurar estado del sidebar
+    const sidebarHidden = localStorage.getItem('sidebarHidden') === 'true';
+    if (sidebarHidden) {
+        const sidebar = document.getElementById('chatSidebar');
+        const toggleIcon = document.getElementById('toggleIcon');
+        sidebar.classList.add('hidden');
+        toggleIcon.innerHTML = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>';
+    }
+});
+
+// ✅ NUEVA FUNCIÓN: Actualizar título del header con animación
+function actualizarTitulo(nuevoTitulo) {
+    const titleElement = document.querySelector('.chatbot-title');
+    
+    // Agregar clase de animación
+    titleElement.classList.add('typing-title');
+    
+    // Simular escritura
+    titleElement.textContent = '';
+    let i = 0;
+    
+    const typingInterval = setInterval(() => {
+        if (i < nuevoTitulo.length) {
+            titleElement.textContent += nuevoTitulo.charAt(i);
+            i++;
+        } else {
+            clearInterval(typingInterval);
+            titleElement.classList.remove('typing-title');
+        }
+    }, 50); // 50ms por carácter
+}
+
+// ✅ NUEVA FUNCIÓN: Actualizar título en el sidebar
+function actualizarTituloSidebar(conversacionId, nuevoTitulo) {
+    const conversacionItems = document.querySelectorAll('.conversacion-item');
+    
+    conversacionItems.forEach(item => {
+        const link = item.getAttribute('href');
+        if (link && link.includes(`/${conversacionId}/`)) {
+            const tituloElement = item.querySelector('.conv-titulo');
+            if (tituloElement) {
+                // Animación de fade
+                tituloElement.style.opacity = '0';
+                setTimeout(() => {
+                    tituloElement.textContent = nuevoTitulo;
+                    tituloElement.style.opacity = '1';
+                }, 200);
+            }
+        }
+    });
+}
 
 chatbotSend.addEventListener('click', sendMessage);
 chatbotInput.addEventListener('keypress', (e) => {
@@ -114,6 +197,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
+<<<<<<< HEAD
 // ==========================================
 // VOICE RECOGNITION IMPLEMENTATION
 // ==========================================
@@ -174,3 +258,49 @@ if ('webkitSpeechRecognition' in window) {
     console.warn("Web Speech API no soportada en este navegador.");
     micBtn.style.display = 'none';
 }
+=======
+// 🆕 NUEVA CONVERSACIÓN
+function nuevaConversacion() {
+    fetch('/gameplay/chat/nueva/', {  
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        window.location.href = data.url;
+    });
+}
+
+// 🆕 ELIMINAR CONVERSACIÓN
+// 🆕 ELIMINAR CONVERSACIÓN
+function eliminarConversacion(event, conversacionId) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    if (!confirm('¿Eliminar esta conversación?')) return;
+    
+    fetch(`/gameplay/chat/eliminar/${conversacionId}/`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.redirect_url) {
+            window.location.href = data.redirect_url;  // ⬅️ Usar la URL que envía el backend
+        }
+    })
+    .catch(error => {
+        console.error('Error al eliminar:', error);
+        alert('Error al eliminar la conversación');
+    });
+}
+
+// Auto-scroll al cargar
+document.addEventListener('DOMContentLoaded', function() {
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+});
+>>>>>>> b36e20563329b636011ab2d33450c75a92418721
