@@ -17,10 +17,15 @@ NO markdown.
 
 Formato exacto:
 {{
-  "accion": "registrar_venta | consultar_stock | pedir_aclaracion",
+  "accion": "registrar_venta | consultar_stock | productos_mas_vendidos | pedir_aclaracion",
   "producto": "string",
   "cantidad": number
 }}
+
+Reglas:
+- Si el mensaje pregunta por productos más vendidos → productos_mas_vendidos
+- Si falta información → pedir_aclaracion
+- Si no se menciona cantidad → usar 1
 
 Mensaje: "{mensaje}"
 """
@@ -31,7 +36,6 @@ Mensaje: "{mensaje}"
     if not texto:
         return {"accion": "pedir_aclaracion"}
 
-    # 🔐 Extraer solo JSON aunque venga basura
     match = re.search(r"\{.*\}", texto, re.DOTALL)
 
     if not match:
