@@ -197,7 +197,7 @@ def ejecutar_accion(data):
         
         return respuesta
 
-    # 🔥 PRODUCTOS MÁS VENDIDOS
+    # 🔥 PRODUCTOS MÁS VENDIDOS (AHORA CON TABLA)
     if accion == "productos_mas_vendidos":
         productos = (
             Producto.objects
@@ -209,10 +209,50 @@ def ejecutar_accion(data):
         if not productos:
             return "📊 Aún no hay ventas registradas."
 
-        respuesta = "🔥 Productos más vendidos:\n"
-        for p in productos:
-            respuesta += f"- {p.nombre}: {p.total_vendido} unidades\n"
+        respuesta = """
+        <strong>🔥 Productos más vendidos</strong>
+        <table style="width:100%; border-collapse: collapse; margin-top:8px;">
+            <thead>
+                <tr style="background:#ef476f; color:white;">
+                    <th style="padding:8px; border:1px solid #ddd; text-align:left;">🏆</th>
+                    <th style="padding:8px; border:1px solid #ddd; text-align:left;">Producto</th>
+                    <th style="padding:8px; border:1px solid #ddd; text-align:center;">Vendidos</th>
+                    <th style="padding:8px; border:1px solid #ddd; text-align:right;">Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+        """
 
+        # Emojis de medallas para top 3
+        medallas = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣']
+        
+        for i, p in enumerate(productos):
+            # Color alternado para filas
+            bg_color = '#f8f9fa' if i % 2 == 0 else 'white'
+            
+            respuesta += f"""
+            <tr style="background:{bg_color};">
+                <td style="padding:8px; border:1px solid #ddd; text-align:center; font-size:20px;">
+                    {medallas[i]}
+                </td>
+                <td style="padding:8px; border:1px solid #ddd;">
+                    <strong>{p.nombre}</strong>
+                </td>
+                <td style="padding:8px; border:1px solid #ddd; text-align:center;">
+                    <strong style="color:#06D6A0;">{p.total_vendido}</strong> unidades
+                </td>
+                <td style="padding:8px; border:1px solid #ddd; text-align:right;">
+                    ${p.precio_venta}
+                </td>
+            </tr>
+            """
+
+        respuesta += "</tbody></table>"
+        
+        # Agregar total de unidades vendidas
+        total_unidades = sum(p.total_vendido for p in productos)
+        respuesta += f"<br><em>📊 Total vendido (Top 5): <strong>{total_unidades}</strong> unidades</em>"
+        
         return respuesta
     
     # 📋 LISTAR PRODUCTOS

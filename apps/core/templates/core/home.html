@@ -1,6 +1,6 @@
 {% extends "base/base.html" %} 
 {% load static %} 
-{% block title_pag %}Página principal | EconoSim 💻{% endblock title_pag %} 
+{% block title_pag %}Página principal | PredictAI 💻{% endblock title_pag %} 
 
 {% block css_styles %}
     <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
@@ -56,13 +56,13 @@
                             </h1>
 
                             <p class="text-2xl text-gray-400 mb-8">
-                                <span class="block">Bienvenido a EconoSimAI -</span>
+                                <span class="block">Bienvenido a PredictAI -</span>
                                 <span class="block">Tu sistema de IA para mejorar tus finanzas</span>
                             </p>
                             
                             <div class="mb-24 lg:mb-52">
-                                <a class="group inline-flex w-full md:w-auto h-14 mb-4 md:mr-3 px-7 items-center justify-center text-base font-medium text-black hover:text-white bg-violet-500 hover:bg-violet-600 transition duration-200 rounded-full" href="#">
-                                    <span class="mr-2">PRUÉBALO GRATIS</span>
+                                <a class="group inline-flex w-full md:w-auto h-14 mb-4 md:mr-3 px-7 items-center justify-center text-base font-medium text-black hover:text-white bg-violet-500 hover:bg-violet-600 transition duration-200 rounded-full" href="{% url "companies:dashboard" %}">
+                                    <span class="mr-2">DEMO DEL PRODUCTO</span>
 
                                     <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -633,7 +633,7 @@
                     <div class="pt-10 border-t border-gray-800">
                         <div class="md:flex items-center justify-between">
                             <div class="mb-6 md:mb-0">
-                                <span class="text-gray-600 tracking-tight">© EconoSimAI. Todos los derechos reservados</span>
+                                <span class="text-gray-600 tracking-tight">© PredictAI. Todos los derechos reservados</span>
                             </div>
 
                             <div>

@@ -3,10 +3,12 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
 import json
-
 from .services.openai_service import interpretar_mensaje
 from .services.negocio_service import ejecutar_accion
 from apps.gameplay.models import MensajeChat, Conversacion
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+
 
 
 def chatbot(request, conversacion_id=None):
@@ -109,7 +111,9 @@ def nueva_conversacion(request):
     conversacion = Conversacion.objects.create()
     return JsonResponse({
         "conversacion_id": conversacion.id,
-        "url": f"/gameplay/chat/{conversacion.id}/"
+        "url": f"/gameplay/chat/{conversacion.id}/",
+        "titulo": conversacion.titulo,  # ✅ AGREGAR
+        "fecha_actualizacion": conversacion.fecha_actualizacion.strftime('%d/%m/%Y %H:%M')  # ✅ AGREGAR
     })
 
 
@@ -135,3 +139,24 @@ def eliminar_conversacion(request, conversacion_id):
             "success": True,
             "redirect_url": f"/gameplay/chat/{nueva_conv.id}/"
         })
+        
+@require_GET
+def obtener_mensajes_conversacion(request, conversacion_id):
+    """Obtener mensajes de una conversación via AJAX"""
+    conversacion = get_object_or_404(Conversacion, id=conversacion_id)
+    mensajes = conversacion.mensajes.all()
+    
+    mensajes_data = [
+        {
+            'tipo': msg.tipo,
+            'mensaje': msg.mensaje,
+            'fecha': msg.fecha.strftime('%H:%M')
+        }
+        for msg in mensajes
+    ]
+    
+    return JsonResponse({
+        'conversacion_id': conversacion.id,
+        'titulo': conversacion.titulo,
+        'mensajes': mensajes_data
+    })

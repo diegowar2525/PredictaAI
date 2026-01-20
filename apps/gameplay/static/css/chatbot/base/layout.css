@@ -1,0 +1,14 @@
+/*LAYOUT - CONTENEDORES PRINCIPALES */
+.chat-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.chat-fullscreen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    overflow: hidden;
+}

@@ -1,0 +1,172 @@
+/* ANIMACIONES */
+
+/* Fade in de mensajes */
+@keyframes fadeInMessage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Pulso del status dot */
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Typing indicator */
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+/* Cursor parpadeante del título */
+.chatbot-title.typing-title {
+    position: relative;
+}
+
+.chatbot-title.typing-title::after {
+    content: '|';
+    animation: blink-cursor 0.7s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Fade del título en sidebar */
+@keyframes fadeInTitle {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.conv-titulo {
+    animation: fadeInTitle 0.4s ease-out;
+}
+
+/* Pulso del micrófono */
+@keyframes micPulse {
+    0% { 
+        transform: scale(1); 
+        box-shadow: 0 0 0 0 rgba(239, 71, 111, 0.7); 
+    }
+    70% { 
+        transform: scale(1.1); 
+        box-shadow: 0 0 0 10px rgba(239, 71, 111, 0); 
+    }
+    100% { 
+        transform: scale(1); 
+        box-shadow: 0 0 0 0 rgba(239, 71, 111, 0); 
+    }
+}
+
+/* ============================================
+   ANIMACIONES DE ENTRADA AL CHATBOT
+============================================ */
+
+/* Fade in suave del contenedor principal */
+.chat-container {
+    animation: fadeInContainer 0.5s ease-out;
+}
+
+@keyframes fadeInContainer {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Slide in del sidebar desde la izquierda */
+.chat-sidebar {
+    animation: slideInFromLeft 0.4s ease-out;
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Fade in del área de chat */
+.chat-fullscreen {
+    animation: fadeInChat 0.5s ease-out 0.1s backwards;
+}
+
+@keyframes fadeInChat {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación del mensaje de bienvenida */
+.welcome-message {
+    animation: fadeInWelcome 0.6s ease-out 0.2s backwards;
+}
+
+@keyframes fadeInWelcome {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animación de los suggestion chips */
+.suggestion-chip {
+    animation: fadeInChip 0.4s ease-out backwards;
+}
+
+.suggestion-chip:nth-child(1) { animation-delay: 0.3s; }
+.suggestion-chip:nth-child(2) { animation-delay: 0.4s; }
+.suggestion-chip:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes fadeInChip {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   ANIMACIÓN DE SALIDA AL ELIMINAR CONVERSACIÓN
+============================================ */
+.conversacion-item {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}

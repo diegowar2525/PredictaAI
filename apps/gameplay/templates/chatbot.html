@@ -5,13 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asistente Virtual - MiNegocio Smart</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
     <link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
 </head>
 <body>
+    <!-- ✅ CSRF TOKEN PARA ELIMINAR CONVERSACIONES -->
+    {% csrf_token %}
+    
     <div class="chat-container">
         <!-- 📜 SIDEBAR CON HISTORIAL -->
-        <div class="chat-sidebar">
+        <div class="chat-sidebar" id="chatSidebar">
             <div class="sidebar-header">
                 <h4>💬 Conversaciones</h4>
                 <button class="btn btn-primary btn-sm" onclick="nuevaConversacion()">
@@ -21,8 +24,10 @@
             
             <div class="conversaciones-list">
                 {% for conv in conversaciones %}
-                <a href="{% url 'gameplay:chatbot_conversacion' conv.id %}" 
-                   class="conversacion-item {% if conv.id == conversacion_actual.id %}active{% endif %}">
+                <a href="#" 
+                data-conversacion-id="{{ conv.id }}"
+                onclick="event.preventDefault(); NavigationManager.loadConversation({{ conv.id }}); return false;"
+                class="conversacion-item {% if conv.id == conversacion_actual.id %}active{% endif %}">
                     <div class="conv-titulo">{{ conv.titulo }}</div>
                     <div class="conv-fecha">{{ conv.fecha_actualizacion|date:"d/m/Y H:i" }}</div>
                     <button class="btn-delete" onclick="eliminarConversacion(event, {{ conv.id }})">🗑️</button>
@@ -36,6 +41,18 @@
         <!-- 💬 CHAT PRINCIPAL -->
         <div class="chat-fullscreen">
             <div class="chatbot-header">
+            <!-- ✅ BOTÓN TOGGLE SIDEBAR CON DOS ÍCONOS -->
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Mostrar/Ocultar conversaciones">
+                <!-- Ícono de menú hamburguesa (mostrar sidebar cuando está oculto) -->
+                <svg id="menuIcon" class="toggle-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+                <!-- Ícono de X (cerrar sidebar cuando está visible) -->
+                <svg id="closeIcon" class="toggle-icon hidden" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+
                 <div class="chatbot-header-info">
                     <div class="chatbot-avatar">AI</div>
                     <div>
@@ -105,6 +122,28 @@
             </div>
         </div>
     </div>
+    <!-- ✅ MODAL DE CONFIRMACIÓN -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon warning">
+                    <span>⚠️</span>
+                </div>
+                <h3 class="modal-title" id="modalTitle">Confirmar acción</h3>
+            </div>
+            <div class="modal-body" id="modalMessage">
+                ¿Estás seguro de realizar esta acción?
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="modalCancel">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" id="modalConfirm">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ CONTENEDOR DE NOTIFICACIONES -->
+    <div class="notification-container" id="notificationContainer"></div>
+
 
     <script>
         const CONVERSACION_ID = {{ conversacion_actual.id }};

@@ -1,0 +1,119 @@
+/*HEADER DEL CHAT */
+.chatbot-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1.25rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.chatbot-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* BOTÓN TOGGLE SIDEBAR */
+.sidebar-toggle-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.sidebar-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.toggle-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.toggle-icon.hidden {
+    display: none;
+}
+
+/* AVATAR */
+.chatbot-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: var(--border-radius-full);
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* TÍTULO Y ESTADO */
+.chatbot-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.chatbot-status {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--border-radius-full);
+    background: var(--success);
+    animation: pulse-dot 2s infinite;
+}
+
+/* BOTÓN CERRAR */
+.chatbot-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-full);
+    transition: background var(--transition-fast);
+    text-decoration: none;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.chatbot-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* ✅ Botón toggle siempre visible en pantallas <1024px */
+@media (max-width: 1024px) {
+    .sidebar-toggle-btn {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}

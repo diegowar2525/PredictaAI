@@ -1,0 +1,260 @@
+/* ============================================
+   RESPONSIVE - ADAPTACIÓN A DISPOSITIVOS
+============================================ */
+
+/* TABLETS Y VENTANAS MEDIANAS */
+@media (max-width: 1024px) {
+    /* ✅ Sidebar se vuelve overlay en pantallas medianas */
+    .chat-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+        width: 280px;
+    }
+    
+    .chat-sidebar.hidden {
+        transform: translateX(-100%);
+    }
+
+    /* ✅ Asegurar que el botón toggle sea visible */
+    .sidebar-toggle-btn {
+        display: flex !important;
+        z-index: 10001;
+    }
+
+    .chatbot-header {
+        padding: 1rem;
+    }
+
+    .message-content {
+        max-width: 80%;
+    }
+}
+
+/* TABLETS PEQUEÑAS */
+@media (max-width: 768px) {
+    .chatbot-header {
+        padding: 0.875rem;
+    }
+
+    .message-content {
+        max-width: 85%;
+    }
+}
+
+/* MÓVILES */
+@media (max-width: 480px) {
+    /* ✅ Sidebar ocupa 75% del ancho en móviles */
+    .chat-sidebar {
+        width: 75vw;
+        max-width: 280px; /* No más de 280px */
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+    }
+
+    .chat-sidebar.hidden {
+        transform: translateX(-100%);
+    }
+
+    /* ✅ Header más compacto en móvil */
+    .chatbot-header {
+        padding: 0.75rem 0.875rem;
+        gap: 8px;
+    }
+
+    /* ✅ Botón toggle siempre visible y accesible */
+    .sidebar-toggle-btn {
+        width: 36px;
+        height: 36px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        z-index: 10001; /* ✅ Encima de todo */
+    }
+
+    .chatbot-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    .chatbot-title {
+        font-size: 0.9rem;
+    }
+
+    .chatbot-status {
+        font-size: 0.7rem;
+    }
+
+    .chatbot-close {
+        width: 32px;
+        height: 32px;
+        font-size: 1.5rem;
+    }
+
+    /* ✅ Mensajes más compactos */
+    .chatbot-messages {
+        padding: 0.75rem;
+    }
+
+    .message-content {
+        max-width: 85%;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    /* ✅ Input area más compacta */
+    .chatbot-input-area {
+        padding: 0.625rem;
+        gap: 6px;
+    }
+
+    .chatbot-input {
+        padding: 10px 14px;
+        font-size: 0.875rem;
+    }
+
+    .chatbot-send-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .chatbot-send-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .chatbot-mic-btn {
+        padding: 6px;
+    }
+    
+    .chatbot-mic-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* ✅ Sidebar más compacto */
+    .sidebar-header {
+        padding: 16px;
+    }
+
+    .sidebar-header h4 {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .sidebar-header .btn {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .conversacion-item {
+        padding: 10px;
+    }
+
+    .conv-titulo {
+        font-size: 14px;
+    }
+
+    .conv-fecha {
+        font-size: 11px;
+    }
+
+    /* ✅ Modal más pequeño en móvil */
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 16px;
+    }
+
+    .modal-body {
+        font-size: 13px;
+    }
+
+    /* ✅ Notificaciones más pequeñas */
+    .notification {
+        min-width: 280px;
+    }
+
+    .notification-title {
+        font-size: 13px;
+    }
+
+    .notification-message {
+        font-size: 12px;
+    }
+    
+    @supports (height: 100dvh) {
+        .chat-fullscreen {
+            height: 100dvh;
+            max-height: 100dvh;
+        }
+
+        .chat-sidebar {
+            height: 100dvh;
+        }
+    }
+}
+
+/* MÓVILES MUY PEQUEÑOS */
+@media (max-width: 360px) {
+    /* ✅ Sidebar ocupa 85% en pantallas muy pequeñas */
+    .chat-sidebar {
+        width: 85vw;
+        max-width: 280px;
+    }
+
+    .chatbot-title {
+        font-size: 0.85rem;
+    }
+
+    .chatbot-status {
+        font-size: 0.65rem;
+    }
+
+    .message-content {
+        max-width: 90%;
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .chatbot-input {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .chatbot-send-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .sidebar-toggle-btn {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* ============================================
+   LANDSCAPE (Móviles en horizontal)
+============================================ */
+@media (max-width: 896px) and (max-height: 414px) and (orientation: landscape) {
+    .chat-sidebar {
+        width: 50vw;
+        max-width: 280px;
+    }
+
+    .chatbot-messages {
+        padding: 0.5rem;
+    }
+
+    .chatbot-input-area {
+        padding: 0.5rem;
+    }
+}

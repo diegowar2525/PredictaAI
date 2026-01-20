@@ -1,0 +1,22 @@
+/*RESET Y ESTILOS BASE*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* SOPORTE PARA VIEWPORT HEIGHT DINÁMICA */
+@supports (height: 100dvh) {
+    body {
+        height: 100dvh;
+        min-height: 100dvh;
+    }
+}

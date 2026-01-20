@@ -1,0 +1,30 @@
+/*VARIABLES GLOBALES*/
+:root {
+    --primary: #667eea;
+    --secondary: #764ba2;
+    --success: #06D6A0;
+    --danger: #EF476F;
+    --warning: #FFD166;
+    --info: #118AB2;
+    
+    /* Espaciados */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Bordes */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 18px;
+    --border-radius-full: 50%;
+    
+    /* Sombras */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
+    /* Transiciones */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}
