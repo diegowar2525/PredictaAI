@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
-  
+
 from .forms.login import LoginForm
 from .forms.signup import SignUpForm
 
@@ -18,7 +18,6 @@ def login_view(request):
             request.session["last_login"] = now().isoformat()
             
             return redirect("companies:dashboard")
-                     
     else:
         form = LoginForm()
         

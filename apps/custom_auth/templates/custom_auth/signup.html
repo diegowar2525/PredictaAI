@@ -1,46 +1,59 @@
 {% extends "base/base_auth.html" %}
 {% load static %}
 
-{% block pag_descrip %} Signup {% endblock pag_descrip %}
-{% block title_pag %} Signup | EconoSimAI 💻 {% endblock title_pag %}
+{% block pag_descrip %} Registro {% endblock %}
+{% block title_pag %} Registro | PredictAI {% endblock %}
 {% block favicon %}
-    https://cdn-icons-png.flaticon.com/512/9194/9194815.png
-{% endblock favicon %}
+https://cdn-icons-png.flaticon.com/512/9194/9194815.png
+{% endblock %}
 
 {% block css_styles %}
-    <style>
-        section { 
-            width: 680px;
-        }
-    </style>
-{% endblock css_styles %}
+<style>
+    section {
+        width: 680px;
+    }
+</style>
+{% endblock %}
 
-{% block title_auth %} Signup {% endblock title_auth %}
+{% block title_auth %} Registro {% endblock %}
+
 {% block inputs %}
+
     {% if form.non_field_errors %}
-        <ul class="text-red-600 text-sm">
+        <div class="mb-4 text-red-600 text-sm text-center">
             {% for error in form.non_field_errors %}
-                <li class="text-center">{{ error }}</li>
+                <p>{{ error }}</p>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
-    
+
     <div class="grid grid-cols-2 gap-x-6 gap-y-8 max-md:grid-cols-1">
         {% for field in form %}
             <div class="flex flex-col gap-1 justify-end">
-                {% if field.errors %}
+
+                {% if field.name not in "password1 password2" and field.errors %}
                     {% for error in field.errors %}
                         <span class="text-red-600 text-sm">{{ error }}</span>
                     {% endfor %}
                 {% endif %}
+
                 {{ field }}
             </div>
         {% endfor %}
     </div>
-{% endblock inputs %}
+
+{% endblock %}
+
 {% block btn_auth %}
-    <button type="submit" class="mx-auto btn-primary w-80 max-md:w-[70vw] max-md:ml-0">Registrarse</button>
-{% endblock btn_auth %}
+<button type="submit" class="mx-auto btn-primary w-80 max-md:w-[70vw]">
+    Registrarse
+</button>
+{% endblock %}
+
 {% block text_alt %}
-    ¿ya tienes una cuenta? <a href="{% url "custom_auth:login" %}" class="text-blue-800 font-semibold tracking-wider transition-colors  hover:text-blue-900">Inicia sesión</a>
-{% endblock text_alt %}
+¿ya tienes una cuenta?
+<a href="{% url "custom_auth:login" %}"
+   class="text-blue-800 font-semibold tracking-wider hover:text-blue-900">
+    Inicia sesión
+</a>
+{% endblock %}

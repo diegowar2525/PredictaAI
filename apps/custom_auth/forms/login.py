@@ -13,7 +13,7 @@ class LoginForm(forms.Form):
         required=True,
         widget=forms.EmailInput(
             attrs={
-                "placeholder": "email",
+                "placeholder": "Correo o nombre de usuario",
                 "minlength": "6",
                 "maxlength": "254", 
                 "class": "bg-gray-200 px-3 py-2 outline-0 w-80 max-md:w-[60vw]"
@@ -26,7 +26,7 @@ class LoginForm(forms.Form):
         max_length=128,
         widget=forms.PasswordInput(
             attrs={
-                "placeholder": "password",
+                "placeholder": "Contraseña",
                 "minlength": "8",
                 "maxlength": "128",
                 "class": "bg-gray-200 px-3 py-2 outline-0 w-80 max-md:w-[60vw]"
