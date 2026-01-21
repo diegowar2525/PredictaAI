@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'apps.custom_auth.apps.CustomAuthConfig',
     'apps.companies.apps.CompaniesConfig',
     'apps.chatbot.apps.ChatbotConfig',
+    'apps.barcode_engine',
 ]
 
 MIDDLEWARE = [
