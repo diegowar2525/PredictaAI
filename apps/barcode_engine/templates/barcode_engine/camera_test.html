@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba lector de códigos</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #video {
+            width: 400px;
+            border: 1px solid #ccc;
+            /* Inversión visual (espejo) */
+            transform: scaleX(-1);
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+        }
+
+        pre {
+            margin-top: 15px;
+            background: #f5f5f5;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Prueba lector de códigos de barras</h2>
+
+<video id="video" autoplay playsinline></video>
+<br>
+<button onclick="capture()">Detectar</button>
+
+<pre id="output">Esperando captura...</pre>
+
+<script>
+const video = document.getElementById("video");
+const output = document.getElementById("output");
+
+/* Activar cámara */
+navigator.mediaDevices.getUserMedia({
+    video: { facingMode: "environment" }
+})
+.then(stream => {
+    video.srcObject = stream;
+})
+.catch(err => {
+    output.textContent = "Error al acceder a la cámara: " + err;
+});
+
+/* Capturar frame e invertir correctamente */
+function capture() {
+    if (!video.videoWidth) {
+        output.textContent = "La cámara aún no está lista.";
+        return;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+
+    /* Inversión horizontal real */
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0);
+
+    const image = canvas.toDataURL("image/jpeg");
+
+    fetch("/barcode/detect/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": getCookie("csrftoken")
+        },
+        body: "image=" + encodeURIComponent(image)
+    })
+    .then(response => response.json())
+    .then(data => {
+        output.textContent = JSON.stringify(data, null, 2);
+    })
+    .catch(error => {
+        output.textContent = "Error en detección: " + error;
+    });
+}
+
+/* Obtener CSRF token (Django) */
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+
+</body>
+</html>

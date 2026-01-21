@@ -26,7 +26,16 @@ urlpatterns = [
     path("custom_auth/", include("apps.custom_auth.urls", namespace="custom_auth")),
     path("chatbot/", include("apps.chatbot.urls", namespace="chatbot")),
     path("companies/", include("apps.companies.urls", namespace="companies")),
+    
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+
+
+
+urlpatterns += [
+    path("barcode/", include("apps.barcode_engine.ui.urls", namespace="barcode_engine")),]
