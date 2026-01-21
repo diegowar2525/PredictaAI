@@ -14,6 +14,19 @@ body {
     overflow-x: hidden; /* Previene scroll horizontal indeseado */
 }
 
+.gradient-text {
+    background: linear-gradient(
+        90deg,
+        var(--primary),
+        #a78bfa,
+        #00bbe4
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+
 /* Animaciones personalizadas que Tailwind no trae por defecto */
 @keyframes spinStar {
     0% { transform: rotate(0deg); }

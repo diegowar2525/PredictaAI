@@ -5,11 +5,9 @@ from django.views.decorators.http import require_POST, require_http_methods
 import json
 from .services.openai_service import interpretar_mensaje
 from .services.negocio_service import ejecutar_accion
-from apps.gameplay.models import MensajeChat, Conversacion
+from apps.chatbot.models import MensajeChat, Conversacion
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-
-
 
 def chatbot(request, conversacion_id=None):
     """Vista principal del chatbot"""
@@ -26,7 +24,7 @@ def chatbot(request, conversacion_id=None):
             conversacion_actual = Conversacion.objects.create()
         
         # Redirigir a la URL con el ID para evitar crear duplicados al recargar
-        return redirect('gameplay:chatbot_conversacion', conversacion_id=conversacion_actual.id)
+        return redirect('chatbot:chatbot_conversacion', conversacion_id=conversacion_actual.id)
     
     # Cargar mensajes de la conversación actual
     mensajes = conversacion_actual.mensajes.all()
@@ -34,7 +32,7 @@ def chatbot(request, conversacion_id=None):
     # Listar todas las conversaciones para el sidebar
     conversaciones = Conversacion.objects.all()[:20]
     
-    return render(request, 'chatbot.html', {
+    return render(request, 'chatbot/chatbot.html', {
         'conversacion_actual': conversacion_actual,
         'mensajes': mensajes,
         'conversaciones': conversaciones
@@ -111,7 +109,7 @@ def nueva_conversacion(request):
     conversacion = Conversacion.objects.create()
     return JsonResponse({
         "conversacion_id": conversacion.id,
-        "url": f"/gameplay/chat/{conversacion.id}/",
+        "url": f"/chatbot/chat/{conversacion.id}/",
         "titulo": conversacion.titulo,  # ✅ AGREGAR
         "fecha_actualizacion": conversacion.fecha_actualizacion.strftime('%d/%m/%Y %H:%M')  # ✅ AGREGAR
     })
@@ -130,14 +128,14 @@ def eliminar_conversacion(request, conversacion_id):
         # Si hay otras conversaciones, redirigir a la más reciente
         return JsonResponse({
             "success": True,
-            "redirect_url": f"/gameplay/chat/{conversacion_restante.id}/"
+            "redirect_url": f"/chatbot/chat/{conversacion_restante.id}/"
         })
     else:
         # Si no quedan conversaciones, crear una nueva
         nueva_conv = Conversacion.objects.create()
         return JsonResponse({
             "success": True,
-            "redirect_url": f"/gameplay/chat/{nueva_conv.id}/"
+            "redirect_url": f"/chatbot/chat/{nueva_conv.id}/"
         })
         
 @require_GET

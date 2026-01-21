@@ -24,8 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("apps.core.urls", namespace="core")),
     path("custom_auth/", include("apps.custom_auth.urls", namespace="custom_auth")),
-    path("reports/", include("apps.reports.urls", namespace="reports")),
-    path("gameplay/", include("apps.gameplay.urls", namespace="gameplay")),
+    path("chatbot/", include("apps.chatbot.urls", namespace="chatbot")),
     path("companies/", include("apps.companies.urls", namespace="companies")),
 ]
 

@@ -20,10 +20,7 @@ INSTALLED_APPS = [
     'apps.core.apps.CoreConfig',
     'apps.custom_auth.apps.CustomAuthConfig',
     'apps.companies.apps.CompaniesConfig',
-    'apps.gameplay.apps.GameplayConfig',
-    'apps.market_ai.apps.MarketAiConfig',
-    'apps.reports.apps.ReportsConfig',
-    'apps.simulation.apps.SimulationConfig'
+    'apps.chatbot.apps.ChatbotConfig',
 ]
 
 MIDDLEWARE = [

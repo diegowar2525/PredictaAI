@@ -187,7 +187,7 @@ const DOM = {
 // ==========================================
 const ChatAPI = {
     async sendMessage(message, conversacionId) {
-        const response = await fetch('/gameplay/chat/api/', {
+        const response = await fetch('/chatbot/chat/api/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -203,7 +203,7 @@ const ChatAPI = {
     },
 
     async getConversationMessages(conversacionId) {
-        const response = await fetch(`/gameplay/chat/mensajes/${conversacionId}/`, {
+        const response = await fetch(`/chatbot/chat/mensajes/${conversacionId}/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -213,7 +213,7 @@ const ChatAPI = {
     },
 
     async createConversation() {
-        const response = await fetch('/gameplay/chat/nueva/', {
+        const response = await fetch('/chatbot/chat/nueva/', {
             method: 'POST',
             headers: {
                 'X-CSRFToken': Utils.getCookie('csrftoken')
@@ -230,7 +230,7 @@ const ChatAPI = {
             throw new Error(MESSAGES.NO_CSRF_TOKEN);
         }
 
-        const response = await fetch(`/gameplay/chat/eliminar/${conversacionId}/`, {
+        const response = await fetch(`/chatbot/chat/eliminar/${conversacionId}/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -252,7 +252,7 @@ const ChatAPI = {
 
             if (!csrfToken) return;
 
-            await fetch(`/gameplay/chat/eliminar/${conversacionId}/`, {
+            await fetch(`/chatbot/chat/eliminar/${conversacionId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -423,7 +423,7 @@ const NavigationManager = {
             history.pushState(
                 { conversacionId: conversacionId }, 
                 '', 
-                `/gameplay/chat/${conversacionId}/`
+                `/chatbot/chat/${conversacionId}/`
             );
             
         } catch (error) {

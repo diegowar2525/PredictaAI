@@ -6,7 +6,6 @@ import json
 from .models import Producto, Venta, ItemVenta
 from django.http import JsonResponse
 
-
 def dashboard(request):
     hoy = timezone.now()
     inicio_mes = hoy.replace(day=1)
@@ -63,7 +62,7 @@ def dashboard(request):
         'labels_semana': json.dumps(labels_semana),
         'datos_semana': json.dumps(datos_semana),
     }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'companies/dashboard.html', context)
 
 def dashboard_data(request):
     """API endpoint que devuelve los datos del dashboard en JSON"""
